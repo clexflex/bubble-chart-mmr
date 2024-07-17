@@ -5,86 +5,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bubble Chart</title>
-   
+    <style>
+        /* Make the chart container responsive */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 50%; /* Aspect ratio */
+        }
+        .chart-container canvas {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        @media (max-width: 768px) {
+    .hide-for-mobile {
+        display: none;
+    }}
+    </style>
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-    <canvas id="bubbleChart" width="1000" height="350"></canvas>
+    <div class="chart-container hide-for-mobile">
+        <canvas id="bubbleChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <script>
         const ctx = document.getElementById('bubbleChart').getContext('2d');
 
         const marketData = [
-            {label: 'Speed Sensor Market', size2023: 9.63, size2030: '13.37 Bn', CAGR: 4.80, url: 'https://example.com/speed-sensor-market'},
-            {label: 'Public Safety Sensors Market', size2023: 1.81, size2030: '2.87 Bn', CAGR: 6.80, url: 'https://example.com/public-safety-sensors-market'},
-            {label: 'Biomedical Temperature Sensor Market', size2023: 12.84, size2030: '20.61 Bn', CAGR: 7, url: 'https://example.com/biomedical-temperature-sensor-market'},
-            {label: 'Artificial Intelligence Sensor Market', size2023: 4.06, size2030: '55.62 Bn', CAGR: 45.30, url: 'https://example.com/ai-sensor-market'},
-            {label: 'Automotive Sensor Market', size2023: 13.5, size2030: '23.44 Bn', CAGR: 8.20, url: 'https://example.com/automotive-sensor-market'},
-            {label: 'Industrial Sensors Market', size2023: 25.87, size2030: '44.42 Bn', CAGR: 8.03, url: 'https://example.com/industrial-sensors-market'},
-            {label: 'Infrared Sensors Market', size2023: 1.21, size2030: '2.71 Bn', CAGR: 12.20, url: 'https://example.com/infrared-sensors-market'},
-            {label: 'Smartphone Sensors Market', size2023: 82.96, size2030: '269.01 Bn', CAGR: 18.30, url: 'https://example.com/smartphone-sensors-market'},
-            {label: 'Level Sensor Market', size2023: 4.64, size2030: '7.98 Bn', CAGR: 8.05, url: 'https://example.com/level-sensor-market'}
+            {label: 'Speed Sensor Market', size2023: 9.63, size2030: '13.37 Bn', CAGR: 4.80, url: 'https://www.stellarmr.com/report/Speed-Sensor-Market/200'},
+            {label: 'Public Safety Sensors Market', size2023: 1.81, size2030: '2.87 Bn', CAGR: 6.80, url: 'https://www.stellarmr.com/report/Public-Safety-Sensors-Market/1404'},
+            {label: 'Biomedical Temperature Sensor Market', size2023: 12.84, size2030: '20.61 Bn', CAGR: 7, url: 'https://www.stellarmr.com/report/Biomedical-Temperature-Sensor-Market/1449'},
+            {label: 'Artificial Intelligence Sensor Market', size2023: 4.06, size2030: '55.62 Bn', CAGR: 45.30, url: 'https://www.stellarmr.com/report/Artificial-Intelligence-Sensor-Market/1506'},
+            {label: 'Automotive Sensor Market', size2023: 13.5, size2030: '23.44 Bn', CAGR: 8.20, url: 'https://www.stellarmr.com/report/Automotive-Sensor-Market/1857'},
+            {label: 'Industrial Sensors Market', size2023: 25.87, size2030: '44.42 Bn', CAGR: 8.03, url: 'https://www.stellarmr.com/report/Industrial-Sensors-Market/2197'},
+            {label: 'Infrared Sensors Market', size2023: 1.21, size2030: '2.71 Bn', CAGR: 12.20, url: 'https://www.stellarmr.com/report/Infrared-Sensors-Market/2198'},
+            {label: 'Smartphone Sensors Market', size2023: 82.96, size2030: '269.01 Bn', CAGR: 18.30, url: 'https://www.stellarmr.com/report/Smartphone-Sensors-Market/2199'},
+            {label: 'Level Sensor Market', size2023: 4.64, size2030: '7.98 Bn', CAGR: 8.05, url: 'https://www.stellarmr.com/report/Level-Sensor-Market/2238'}
         ];
 
-        // Determine min and max sizes to normalize the radii
         const minSize2023 = Math.min(...marketData.map(d => d.size2023));
         const maxSize2023 = Math.max(...marketData.map(d => d.size2023));
 
-        const data = {
-            datasets: marketData.map((d, i) => ({
-                label: d.label,
-                data: [{
-                    x: d.size2023,
-                    y: d.CAGR,
-                    r: ((d.size2023 - minSize2023) / (maxSize2023 - minSize2023)) * 70 + 30, // scale radii
-                    url: d.url,
-                    size2030: d.size2030
-                }],
-                backgroundColor: `hsl(${i * 40}, 70%, 50%)`
-            }))
-        };
+        function calculateRadius(size2023, chartWidth) {
+            const baseSize = chartWidth / 20;
+            return ((size2023 - minSize2023) / (maxSize2023 - minSize2023)) * baseSize + 30;
+        }
 
-        const config = {
-            type: 'bubble',
-            data: data,
-            options: {
-                responsive: true,
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const data = context.raw;
-                                return `${context.dataset.label}: Market Size 2023: ${data.x} Bn, CAGR: ${data.y}%, Market Size 2030: ${data.size2030}`;
+        function createChart() {
+            const chartWidth = document.getElementById('bubbleChart').offsetWidth;
+            const data = {
+                datasets: marketData.map((d, i) => ({
+                    label: d.label,
+                    data: [{
+                        x: d.size2023,
+                        y: d.CAGR,
+                        r: calculateRadius(d.size2023, chartWidth),
+                        url: d.url,
+                        size2030: d.size2030
+                    }],
+                    backgroundColor: `hsl(${i * 40}, 70%, 50%)`
+                }))
+            };
+
+            const config = {
+                type: 'bubble',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const data = context.raw;
+                                    return `${context.dataset.label}: Market Size 2023: ${data.x} Bn, CAGR: ${data.y}%, Market Size 2030: ${data.size2030}`;
+                                }
+                            }
+                        }
+                    },
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            const element = elements[0];
+                            const dataset = data.datasets[element.datasetIndex];
+                            const bubble = dataset.data[element.index];
+                            window.location.href = bubble.url;
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Market Size 2023 in USD Bn'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'CAGR (in %)'
                             }
                         }
                     }
-                },
-                onClick: (event, elements) => {
-                    if (elements.length > 0) {
-                        const element = elements[0];
-                        const dataset = data.datasets[element.datasetIndex];
-                        const bubble = dataset.data[element.index];
-                        window.location.href = bubble.url;
-                    }
-                },
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Market Size 2023 in USD Bn'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'CAGR (in %)'
-                        }
-                    }
                 }
-            }
-        };
+            };
 
-        new Chart(ctx, config);
+            if (window.myChart) {
+                window.myChart.destroy();
+            }
+
+            window.myChart = new Chart(ctx, config);
+        }
+
+        window.addEventListener('resize', createChart);
+        createChart();
     </script>
 </body>
 </html>
