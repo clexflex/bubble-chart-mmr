@@ -91,7 +91,7 @@
                             const element = elements[0];
                             const dataset = data.datasets[element.datasetIndex];
                             const bubble = dataset.data[element.index];
-                            window.location.href = bubble.url;
+                            window.top.location.href = bubble.url; // Opens the link in the top-level browsing context
                         }
                     },
                     scales: {
