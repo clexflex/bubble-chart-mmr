@@ -4,12 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bubble Chart</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        #chartContainer {
+            width: 100%;
+            max-width: 800px;
+            height: 500px;
+        }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <script src="chart-data.js"></script>
 </head>
 <body>
-    <canvas id="bubbleChart" width="100%" height="50%"></canvas>
+    <div id="chartContainer">
+        <canvas id="bubbleChart"></canvas>
+    </div>
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const category = urlParams.get('category');
@@ -22,65 +39,92 @@
 
         const ctx = document.getElementById('bubbleChart').getContext('2d');
 
-        // Determine min and max sizes to normalize the radii
-        const minSize2023 = Math.min(...marketData.map(d => d.size2023));
-        const maxSize2023 = Math.max(...marketData.map(d => d.size2023));
+        // Function to calculate bubble radii based on both width and height of the viewport
+        function calculateRadii(size2023, minSize2023, maxSize2023, chartWidth, chartHeight) {
+            const maxBubbleSize = Math.min(chartWidth, chartHeight) * 0.1; // Max bubble size is 10% of the smaller dimension
+            const minBubbleSize = 20; // Minimum bubble size
+            return ((size2023 - minSize2023) / (maxSize2023 - minSize2023)) * maxBubbleSize + minBubbleSize;
+        }
 
-        const data = {
-            datasets: marketData.map((d, i) => ({
-                label: d.label,
-                data: [{
-                    x: d.size2023,
-                    y: d.CAGR,
-                    r: ((d.size2023 - minSize2023) / (maxSize2023 - minSize2023)) * 40 + 20, // scale radii
-                    url: d.url,
-                    size2030: d.size2030
-                }],
-                backgroundColor: `hsl(${i * 40}, 70%, 50%)`
-            }))
-        };
+        // Function to create chart configuration
+        function createChartConfig(chartWidth, chartHeight, displayLegend) {
+            const minSize2023 = Math.min(...marketData.map(d => d.size2023));
+            const maxSize2023 = Math.max(...marketData.map(d => d.size2023));
 
-        const config = {
-            type: 'bubble',
-            data: data,
-            options: {
-                responsive: true,
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const data = context.raw;
-                                return `${context.dataset.label}: Market Size 2023: ${data.x} Bn, CAGR: ${data.y}%, Market Size 2030: ${data.size2030}`;
+            const data = {
+                datasets: marketData.map((d, i) => ({
+                    label: d.label,
+                    data: [{
+                        x: d.size2023,
+                        y: d.CAGR,
+                        r: calculateRadii(d.size2023, minSize2023, maxSize2023, chartWidth, chartHeight),
+                        url: d.url,
+                        size2030: d.size2030
+                    }],
+                    backgroundColor: `hsl(${i * 40}, 70%, 50%)`,
+                }))
+            };
+
+            return {
+                type: 'bubble',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: displayLegend
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const data = context.raw;
+                                    return `${context.dataset.label}: Market Size 2023: ${data.x} Bn, CAGR: ${data.y}%, Market Size 2030: ${data.size2030}`;
+                                }
+                            }
+                        }
+                    },
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            const element = elements[0];
+                            const dataset = data.datasets[element.datasetIndex];
+                            const bubble = dataset.data[element.index];
+                            window.open(bubble.url, '_blank'); 
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Market Size 2023 in USD Bn'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'CAGR (in %)'
                             }
                         }
                     }
-                },
-                onClick: (event, elements) => {
-                    if (elements.length > 0) {
-                        const element = elements[0];
-                        const dataset = data.datasets[element.datasetIndex];
-                        const bubble = dataset.data[element.index];
-                        window.open(bubble.url, '_blank'); 
-                    }
-                },
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Market Size 2023 in USD Bn'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'CAGR (in %)'
-                        }
-                    }
                 }
-            }
-        };
+            };
+        }
 
-        new Chart(ctx, config);
+        // Function to create chart and handle resizing
+        function createResponsiveChart() {
+            const chartWidth = ctx.canvas.clientWidth;
+            const chartHeight = ctx.canvas.clientHeight;
+            const displayLegend = window.matchMedia("(min-width: 768px)").matches;
+            const chartConfig = createChartConfig(chartWidth, chartHeight, displayLegend);
+            return new Chart(ctx, chartConfig);
+        }
+
+        let chart = createResponsiveChart();
+
+        window.addEventListener('resize', () => {
+            chart.destroy();
+            chart = createResponsiveChart();
+        });
     </script>
 </body>
 </html>
