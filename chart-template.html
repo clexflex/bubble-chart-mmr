@@ -16,7 +16,7 @@
         #chartContainer {
             width: 100%;
             max-width: 1400px;
-            height: 500px;
+            height: 400px;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -42,7 +42,7 @@
         // Function to calculate bubble radii based on both width and height of the viewport
         function calculateRadii(size2023, minSize2023, maxSize2023, chartWidth, chartHeight) {
             const maxBubbleSize = Math.min(chartWidth, chartHeight) * 0.1; // Max bubble size is 10% of the smaller dimension
-            const minBubbleSize = 20; // Minimum bubble size
+            const minBubbleSize = 17; // Minimum bubble size
             return ((size2023 - minSize2023) / (maxSize2023 - minSize2023)) * maxBubbleSize + minBubbleSize;
         }
 
