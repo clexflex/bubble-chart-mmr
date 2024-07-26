@@ -10,7 +10,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            
             box-sizing: border-box;
         }
         #chartContainer {
@@ -41,7 +41,7 @@
 
         // Function to calculate bubble radii based on both width and height of the viewport
         function calculateRadii(size2023, minSize2023, maxSize2023, chartWidth, chartHeight) {
-            const maxBubbleSize = Math.min(chartWidth, chartHeight) * 0.1; // Max bubble size is 10% of the smaller dimension
+            const maxBubbleSize = Math.min(chartWidth, chartHeight) * 0.15; // Max bubble size is 10% of the smaller dimension
             const minBubbleSize = 17; // Minimum bubble size
             return ((size2023 - minSize2023) / (maxSize2023 - minSize2023)) * maxBubbleSize + minBubbleSize;
         }
