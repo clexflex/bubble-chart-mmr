@@ -14,8 +14,8 @@ const chartData = {
         {label: 'Digital Education Market', size2023: 25.68, size2030: '176.49 Bn', CAGR: 31.7, url: 'https://www.stellarmr.com/report/Digital-Education-Market/312'},
         {label: 'Lawful Interception Market', size2023: 6.91, size2030: '38.91 Bn', CAGR: 28, url: 'https://www.stellarmr.com/report/Lawful-Interception-Market/265'},
         {label: 'Digital Agriculture Market', size2023: 18.55, size2030: '36.71 Bn', CAGR: 10.24, url: 'https://www.stellarmr.com/report/Digital-Agriculture-Market/194'},
-		{label: 'Physical Security Market', size2023: 123.02, size2030: '193.70 Bn', CAGR: 6.7, url: 'https://www.stellarmr.com/report/Physical-Security-Market/304'},
-        {label: 'Speed SensorMarket', size2023: 9.63, size2030: '13.37 Bn', CAGR: 4.8, url: 'https://www.stellarmr.com/report/Speed-Sensor-Market/200'},
+	{label: 'Physical Security Market', size2023: 123.02, size2030: '193.70 Bn', CAGR: 6.7, url: 'https://www.stellarmr.com/report/Physical-Security-Market/304'},
+      
        
        
     ],
