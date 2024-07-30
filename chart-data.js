@@ -144,7 +144,7 @@ const chartData = {
         {label: 'Semiconductors in Military and Aerospace Market', size2023: 22.18, size2030: '32.70 Bn', CAGR: 5.7, url: 'https://www.stellarmr.com/report/Semiconductors-in-Military-and-Aerospace-Market/2286'},
         {label: 'Power Semiconductor Market', size2023: 47.26, size2030: '64.16 Bn', CAGR: 4.46, url: 'https://www.stellarmr.com/report/Power-Semiconductor-Market/2285'},
 		{label: 'Gaming Chips Market', size2023: 13.09, size2030: '29.67 Bn', CAGR: 12.4, url: 'https://www.stellarmr.com/report/Gaming-Chips-Market/2284'},
-		{label: 'Consumer Electronics Market', size2023: 748.25, size2030: '955.85 Bn', CAGR: 3.56, url: 'https://www.stellarmr.com/report/Consumer-Electronics-Market/2240'},
+		{label: 'Semiconductor Market', size2023: 558.18, size2030: '1080.83 Bn', CAGR: 9.9, url: 'https://www.stellarmr.com/report/semiconductor-market/2311'},
        
     ],
     category16: [
