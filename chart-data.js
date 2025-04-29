@@ -12,7 +12,7 @@ const chartData = {
         {label: 'Artificial Intelligence as a Service Market', size2024: 20.04, size2032: '279.31 Bn', CAGR: 39, url: 'https://www.stellarmr.com/report/Artificial-Intelligence-as-a-Service-Market/284'},
         {label: '5G Services Market', size2024: 142.77, size2032: '990.86 Bn', CAGR: 27.4, url: 'https://www.stellarmr.com/report/5G-Services-Market/316'},
         {label: 'Digital Education Market', size2024: 33.82, size2032: '306.1 Bn', CAGR: 31.7, url: 'https://www.stellarmr.com/report/Digital-Education-Market/312'},
-        {label: 'Lawful Interception Market', size2024: 8.84, size2032: 63.73 Bn', CAGR: 28, url: 'https://www.stellarmr.com/report/Lawful-Interception-Market/265'},
+        {label: 'Lawful Interception Market', size2024: 8.84, size2032: '63.73 Bn', CAGR: 28, url: 'https://www.stellarmr.com/report/Lawful-Interception-Market/265'},
         {label: 'Digital Agriculture Market', size2024: 20.44, size2032: '44.6 Bn', CAGR: 10.24, url: 'https://www.stellarmr.com/report/Digital-Agriculture-Market/194'},
 	    {label: 'Physical Security Market', size2024: 131.26, size2032: '220.52 Bn', CAGR: 6.7, url: 'https://www.stellarmr.com/report/Physical-Security-Market/304'},
 
