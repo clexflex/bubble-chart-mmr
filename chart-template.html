@@ -40,26 +40,26 @@
         const ctx = document.getElementById('bubbleChart').getContext('2d');
 
         // Function to calculate bubble radii based on both width and height of the viewport
-        function calculateRadii(size2023, minSize2023, maxSize2023, chartWidth, chartHeight) {
+        function calculateRadii(size2024, minSize2024, maxSize2024, chartWidth, chartHeight) {
             const maxBubbleSize = Math.min(chartWidth, chartHeight) * 0.15; // Max bubble size is 10% of the smaller dimension
             const minBubbleSize = 17; // Minimum bubble size
-            return ((size2023 - minSize2023) / (maxSize2023 - minSize2023)) * maxBubbleSize + minBubbleSize;
+            return ((size2024 - minSize2024) / (maxSize2024 - minSize2024)) * maxBubbleSize + minBubbleSize;
         }
 
         // Function to create chart configuration
         function createChartConfig(chartWidth, chartHeight, displayLegend) {
-            const minSize2023 = Math.min(...marketData.map(d => d.size2023));
-            const maxSize2023 = Math.max(...marketData.map(d => d.size2023));
+            const minSize2024 = Math.min(...marketData.map(d => d.size2024));
+            const maxSize2024 = Math.max(...marketData.map(d => d.size2024));
 
             const data = {
                 datasets: marketData.map((d, i) => ({
                     label: d.label,
                     data: [{
-                        x: d.size2023,
+                        x: d.size2024,
                         y: d.CAGR,
-                        r: calculateRadii(d.size2023, minSize2023, maxSize2023, chartWidth, chartHeight),
+                        r: calculateRadii(d.size2024, minSize2024, maxSize2024, chartWidth, chartHeight),
                         url: d.url,
-                        size2030: d.size2030
+                        size2032: d.size2032
                     }],
                     backgroundColor: `hsl(${i * 40}, 70%, 50%)`,
                 }))
@@ -79,7 +79,7 @@
                             callbacks: {
                                 label: function(context) {
                                     const data = context.raw;
-                                    return `${context.dataset.label}: Market Size 2023: ${data.x} Bn, CAGR: ${data.y}%, Market Size 2030: ${data.size2030}`;
+                                    return `${context.dataset.label}: Market Size 2023: ${data.x} Bn, CAGR: ${data.y}%, Market Size 2030: ${data.size2032}`;
                                 }
                             }
                         }
